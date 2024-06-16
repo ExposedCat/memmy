@@ -1,34 +1,34 @@
 {
-  "name": "ts-tg-bot",
+  "name": "memmy-bot",
   "version": "1.0.0",
-  "description": "Telegram bot template in TypeScript ",
+  "description": "Telegram bot for memes generation ",
   "main": "build/index.js",
   "scripts": {
     "compile": "tsc",
     "postcompile": "cp -r src/locales build",
-    "bg:start": "npm run prepare && pm2 start build/index.js --name telegram-bot",
-    "bg:restart": "npm run prepare && pm2 restart telegram-bot",
-    "bg:logs": "pm2 logs telegram-bot --lines 1000 -f",
+    "bg:start": "npm run prepare && pm2 start build/index.js --name memmy",
+    "bg:restart": "npm run prepare && pm2 restart memmy",
+    "bg:logs": "pm2 logs memmy --lines 1000 -f",
     "start": "npm run compile && node .",
-    "lint": "npx prettier --write src"
+    "lint": "npx oxlint"
   },
   "keywords": [
     "telegram",
     "bot",
-    "grammy",
-    "mongodb",
-    "typescript"
+    "memes",
+    "generate"
   ],
   "author": "ExposedCat",
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@grammyjs/i18n": "^0.5.1",
     "dotenv": "^16.0.1",
-    "grammy": "^1.10.1",
+    "grammy": "^1.24.1",
     "mongodb": "^4.9.1"
   },
   "devDependencies": {
-    "@types/node": "^18.7.4",
+    "@tsconfig/recommended": "^1.0.6",
+    "@types/node": "^18.19.34",
     "@types/pg": "^8.6.5",
     "@typescript-eslint/parser": "^6.7.3",
     "eslint": "^8.50.0",
@@ -39,12 +39,13 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-sonarjs": "^0.21.0",
+    "oxlint": "^0.4.4",
     "prettier": "^3.0.3",
     "typescript": "^4.7.4"
   },
   "type": "module",
   "engines": {
-    "node": ">=4",
-    "npm": ">=2"
+    "node": ">=20",
+    "npm": ">=10"
   }
 }
