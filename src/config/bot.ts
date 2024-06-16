@@ -9,13 +9,14 @@ import { initLocaleEngine } from './locale-engine.js'
 import { startController } from '../controllers/start.js'
 import { stopController } from '../controllers/stop.js'
 import type { Bot } from '../types/telegram.js'
-import { buildName, getOrCreatePlayer } from '../services/user.js'
+import { buildName, getOrCreateUser } from '../services/user.js'
 import { getOrCreateChat } from '../services/chat.js'
+import { inlineController } from '../controllers/inline.js'
 
 function extendContext(bot: Bot, database: Database) {
 	bot.use(async (ctx, next) => {
 		if (!ctx.chat || !ctx.from) {
-			return
+			return;
 		}
 
 		ctx.text = createReplyWithTextFunc(ctx)
@@ -30,8 +31,8 @@ function extendContext(bot: Bot, database: Database) {
 			})
 		}
 
-		ctx.entities = {
-			user: await getOrCreatePlayer({
+		ctx.dbEntities = {
+			user: await getOrCreateUser({
 				db: database,
 				userId: ctx.from.id,
 				name: buildName(ctx.from.first_name, ctx.from.last_name)
@@ -43,6 +44,10 @@ function extendContext(bot: Bot, database: Database) {
 	})
 }
 
+function setupPreControllers(bot: Bot) {
+  bot.use(inlineController)
+}
+
 function setupMiddlewares(bot: Bot, localeEngine: I18n) {
 	bot.use(session())
 	bot.use(localeEngine.middleware())
@@ -50,14 +55,15 @@ function setupMiddlewares(bot: Bot, localeEngine: I18n) {
 }
 
 function setupControllers(bot: Bot) {
-	bot.use(startController)
+  bot.use(startController)
 	bot.use(stopController)
 }
 
 export async function startBot(database: Database) {
-	const localesPath = resolvePath(import.meta.url, '../locales')
+  const localesPath = resolvePath(import.meta.url, '../locales')
 	const i18n = initLocaleEngine(localesPath)
 	const bot = new TelegramBot<CustomContext>(process.env.TOKEN)
+  setupPreControllers(bot)
 	extendContext(bot, database)
 	setupMiddlewares(bot, i18n)
 	setupControllers(bot)

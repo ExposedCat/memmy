@@ -10,7 +10,7 @@ export interface Custom<C extends Context> {
 		extra?: Extra
 	) => ReturnType<C['reply']>
 
-	entities: {
+	dbEntities: {
 		user: User
 		chat: Chat | null
 	}

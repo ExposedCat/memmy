@@ -6,7 +6,7 @@ import { connectToDb } from './database.js'
 
 export async function startApp() {
 	try {
-		loadEnv()
+		loadEnv('../../.env')
 		validateEnv(['TOKEN', 'DB_CONNECTION_STRING'])
 	} catch (error) {
 		console.error('Error occurred while loading environment:', error)

@@ -19,7 +19,7 @@ async function createUser(args: {
 	return userObject
 }
 
-export async function getOrCreatePlayer(args: {
+export async function getOrCreateUser(args: {
 	db: Database
 	userId: number
 	name: string
